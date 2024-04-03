@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Results</title>
+    
+    
+</head>
+<body>
+   
+    <h2>Audit Report</h2>
+    <div id="auditResults">
+        <!-- Audit results will be displayed here -->
+    </div>
+<button id="print">Print</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+             // Show loading overlay
+           
+            // Parse the query parameter to get the audit results
+            const urlParams = new URLSearchParams(window.location.search);
+            const auditResultsQuery = urlParams.get('audit');
+            const auditResults = JSON.parse(decodeURIComponent(auditResultsQuery));
+          
+            // Create a div element to contain audit results
+            const auditDiv = document.createElement('div');
+
+            // Set the content of the div with audit results
+            auditDiv.innerHTML = `
+                <h2>Title:</h2>
+                <p>${auditResults.title}</p>
+                <h2>Load Time:</h2>
+                <p>${auditResults.loadtime}</p>
+                <h2>Meta Description:</h2>
+                <p>${auditResults.metaDescription}</p>
+           
+                <h2>Heading:</h2>
+                <p>${auditResults.h1Content}</p>
+                <h2>Number of H1 tags:</h2>
+                <p>${auditResults.h1Count}</p>
+                <h2>Number of images :</h2>
+                <p>${auditResults.imagesC}</p>
+                <h2>Number of images they Dosen't Have Alt:</h2>
+                <p>${auditResults.imageA}</p>
+                <h2>Screenshot:</h2>
+                <img src="/${auditResults.screenshot}" alt="Screenshot">
+            `;
+         
+       
+            // Append the audit div to the #auditResults div
+            document.getElementById('auditResults').appendChild(auditDiv);
+            //  document.getElementById('loadingOverlay').style.display = 'none';
+          
+        });
+        
+   
+ 
+    </script>
+ 
+    
+</body>
+</html>

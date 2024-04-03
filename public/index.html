@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Audit Report Tool</title>
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body>
+    <div id="loadingOverlay">
+       
+        <div class="loading">
+<div class="spinner"></div>
+            <p>we are analyzing  your audit report details</p>
+        </div>
+    </div>
+    <h1>SEO Audit Report Tool</h1>
+    <form id="seoForm">
+        <label for="url">Enter URL:</label>
+        <input type="text" id="url" name="url" required>
+        <button type="submit">Audit</button>
+    </form>
+
+
+   
+
+
+    <script>
+
+
+document.getElementById('seoForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    document.getElementById('loadingOverlay').style.display = 'block';
+     // Set timeout to hide loading overlay after 10 seconds
+     setTimeout(function() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    }, 10000); 
+    var url = document.getElementById('url').value;
+
+    // Show loading overlay
+    // document.getElementById('loadingOverlay').style.display = 'block';
+
+    fetch('/audit?url=' + encodeURIComponent(url))
+        .then(response => response.json())
+        .then(data => {
+            // Prepare the audit results to be passed as a query parameter to the new page
+            const auditResultsQuery = encodeURIComponent(JSON.stringify(data));
+            
+            // Redirect to a new page with the audit results as a query parameter
+            window.open('/audit-results.html?audit=' + auditResultsQuery, '_blank');
+           
+        })
+        .catch(error => {
+            console.error('Error:', error);
+           
+        });
+});
+
+document.getElementById('printButton').addEventListener('click', function() {
+    // Hide elements outside of auditResults
+    const elementsToHide = document.querySelectorAll('body > *:not(#auditResults)');
+    elementsToHide.forEach(element => {
+        element.style.display = 'none';
+    });
+
+   
+    // Trigger browser's print functionality
+    window.print();
+
+   
+});
+    </script>
+  <!-- <script src="/javascript.js"></script> -->
+</body>
+</html>
+
