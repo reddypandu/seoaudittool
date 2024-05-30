@@ -8,7 +8,7 @@
     
 </head>
 <body>
-   
+  
     <h2>Audit Report</h2>
     <div id="auditResults">
         <!-- Audit results will be displayed here -->
@@ -34,7 +34,13 @@
                 <p>${auditResults.loadtime}</p>
                 <h2>Meta Description:</h2>
                 <p>${auditResults.metaDescription}</p>
-           
+                <h2>Canonical Tag</h2>
+           <p>Your page is using the Canonical Tag.</p>
+           <p>${auditResults.canonical}</p>
+
+           <h2>Robots.txt</h2>
+           <p>Your website appears to have a robots.txt file.</p>
+           <p>${auditResults.robotsTxtExists}</p>
                 <h2>Heading:</h2>
                 <p>${auditResults.h1Content}</p>
                 <h2>Number of H1 tags:</h2>
@@ -44,7 +50,7 @@
                 <h2>Number of images they Dosen't Have Alt:</h2>
                 <p>${auditResults.imageA}</p>
                 <h2>Screenshot:</h2>
-                <img src="/${auditResults.screenshot}" alt="Screenshot">
+                <img src="${auditResults.screenshot}" alt="Screenshot">
             `;
          
        

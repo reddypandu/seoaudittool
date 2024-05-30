@@ -9,9 +9,9 @@ async function performAudit(url) {
       // Record the start time before navigating to the URL
       const startTime = Date.now();
     try {
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(url, { waitUntil: 'networkidle2',timeout: 60000  });
  
-     
+   
     
         const title = await page.title();
           // Calculate the time taken to load the webpage
@@ -28,13 +28,47 @@ async function performAudit(url) {
             };
         });
         // Get the meta description
-        const metaDescription = await page.$eval('meta[name="description"]', element => element.content);
+        // const metaDescription = await page.$eval('meta[name="description"]', element => element.content);
+  
+        let metaDescription;
+        try {
+            metaDescription = await page.$eval('meta[name="description"]', element => element ? element.content : '');
+        
+        } catch (error) {
+       
+            metaDescription = '[MISSING]';
+        }
+        let canonical;
+        try {
+            canonical = await page.$eval('link[rel="canonical"]',element => element.href);
+        
+        } catch (error) {
+       
+            canonical = '[Not Found]';
+        }
+
+
+
         // Evaluate the function in the context of the page to count images
         const imageCount = await page.evaluate(() => {
             return document.querySelectorAll('img').length;
         });
-       
 
+        let robotsTxtUrl = null;
+        try {
+            const robotsTxtResponse = await page.goto(`${url}/robots.txt`);
+            if (robotsTxtResponse && robotsTxtResponse.ok()) {
+                robotsTxtUrl = `${url}robots.txt`;
+            }
+        } catch (error) {
+            // Handle errors when navigating to robots.txt
+            console.error('Error navigating to robots.txt:', error);
+        }
+        
+
+
+
+        // const robotsTxtExists = robotsTxtResponse && robotsTxtResponse.ok();
 
 
       // Evaluate the function in the context of the page to audit images
@@ -56,20 +90,19 @@ async function performAudit(url) {
         return results;
     });
 
-        // Resolve the absolute file path for saving the screenshot
-        const screenshotPath = path.resolve('screenshot.png');
-// Extract the filename from the absolute path
-const filename = path.basename(screenshotPath);
-
-// Construct the relative path
-const relativePath =  filename;
 
 // Take a screenshot
+// Resolve the absolute file path for saving the screenshot
+const screenshotPath = path.resolve('screenshot.png');
+const filename = path.basename(screenshotPath);
+
+const relativePath =  filename;
 await page.screenshot({ path: screenshotPath });
        
 
    
         return {
+            url:url,
             title: title,
             loadtime:loadTime,
             h1Content:h1Tags.content,
@@ -77,7 +110,9 @@ await page.screenshot({ path: screenshotPath });
             metaDescription: metaDescription,
             imagesC:imageCount,
             imageA:imageAudits.length,
-            screenshot: relativePath
+            screenshot: relativePath,
+            robotsTxtExists:robotsTxtUrl,
+            canonical:canonical
         };
 
         
