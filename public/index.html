@@ -12,7 +12,7 @@
        
         <div class="loading">
 <div class="spinner"></div>
-            <p>we are analyzing  your audit report details</p>
+            <p>we are fetching your audit report details, it will take less than one minute</p>
         </div>
     </div>
     <h1>SEO Audit Report Tool</h1>
@@ -32,14 +32,8 @@
 document.getElementById('seoForm').addEventListener('submit', function(event) {
     event.preventDefault();
     document.getElementById('loadingOverlay').style.display = 'block';
-     // Set timeout to hide loading overlay after 10 seconds
-     setTimeout(function() {
-        document.getElementById('loadingOverlay').style.display = 'none';
-    }, 10000); 
+    
     var url = document.getElementById('url').value;
-
-    // Show loading overlay
-    // document.getElementById('loadingOverlay').style.display = 'block';
 
     fetch('/audit?url=' + encodeURIComponent(url))
         .then(response => response.json())
@@ -49,27 +43,17 @@ document.getElementById('seoForm').addEventListener('submit', function(event) {
             
             // Redirect to a new page with the audit results as a query parameter
             window.open('/audit-results.html?audit=' + auditResultsQuery, '_blank');
-           
         })
         .catch(error => {
             console.error('Error:', error);
-           
+        })
+        .finally(() => {
+            // Hide loading overlay after fetch is complete
+            document.getElementById('loadingOverlay').style.display = 'none';
         });
 });
 
-document.getElementById('printButton').addEventListener('click', function() {
-    // Hide elements outside of auditResults
-    const elementsToHide = document.querySelectorAll('body > *:not(#auditResults)');
-    elementsToHide.forEach(element => {
-        element.style.display = 'none';
-    });
 
-   
-    // Trigger browser's print functionality
-    window.print();
-
-   
-});
     </script>
   <!-- <script src="/javascript.js"></script> -->
 </body>

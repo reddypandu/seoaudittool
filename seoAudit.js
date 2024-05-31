@@ -27,24 +27,31 @@ async function performAudit(url) {
                 content: h1Content
             };
         });
+
+
+
         // Get the meta description
         // const metaDescription = await page.$eval('meta[name="description"]', element => element.content);
   
         let metaDescription;
         try {
             metaDescription = await page.$eval('meta[name="description"]', element => element ? element.content : '');
-        
+        metaDescription+='<i class="fa fa-check" style="font-size:24px;color:green"></i>';
+       
         } catch (error) {
        
-            metaDescription = '[MISSING]';
+            metaDescription = '<i class="fa fa-close" style="font-size:24px;color:red"></i>';
         }
         let canonical;
         try {
-            canonical = await page.$eval('link[rel="canonical"]',element => element.href);
+            // canonical = await page.$eval('link[rel="canonical"]',element => element.href);
+            canonical = await page.$eval('link[rel="canonical"]', element => element.href);
+            // If canonical link is found, add the check icon with green color
+            canonical += ' <i class="fa fa-check" style="font-size:24px;color:green"></i>';
         
         } catch (error) {
        
-            canonical = '[Not Found]';
+            canonical = '<i class="fa fa-close" style="font-size:24px;color:red"></i>';
         }
 
 
@@ -54,16 +61,32 @@ async function performAudit(url) {
             return document.querySelectorAll('img').length;
         });
 
-        let robotsTxtUrl = null;
+        let robotsTxtUrl='<i class="fa fa-close" style="font-size:24px;color:red"></i>';
         try {
             const robotsTxtResponse = await page.goto(`${url}/robots.txt`);
             if (robotsTxtResponse && robotsTxtResponse.ok()) {
-                robotsTxtUrl = `${url}robots.txt`;
+                robotsTxtUrl = `${url}robots.txt  <i class="fa fa-check" style="font-size:24px;color:green"></i>`;
+
             }
+
         } catch (error) {
-            // Handle errors when navigating to robots.txt
+            // Handle errors when ;navigating to robots.txt
             console.error('Error navigating to robots.txt:', error);
         }
+        let sitemapUrl='<i class="fa fa-close" style="font-size:24px;color:red"></i>';
+        try {
+            const sitemapResponse = await page.goto(`${url}/sitemap.xml`);
+            if (sitemapResponse && sitemapResponse.ok()) {
+                sitemapUrl = `${url}sitemap.xml  <i class="fa fa-check" style="font-size:24px;color:green"></i>`;
+
+            }
+
+        } catch (error) {
+            // Handle errors when ;navigating to robots.txt
+            console.error('Error navigating to sitemap.xml:', error);
+        }
+      
+
         
 
 
@@ -112,7 +135,8 @@ await page.screenshot({ path: screenshotPath });
             imageA:imageAudits.length,
             screenshot: relativePath,
             robotsTxtExists:robotsTxtUrl,
-            canonical:canonical
+            canonical:canonical,
+            sitemapUrl:sitemapUrl
         };
 
         

@@ -39,7 +39,7 @@
 }
 #loadingOverlay  .loading p {
     color: white;
-    font-size: 30px;
+    font-size: 15px;
     font-weight: 600;
  }
 @keyframes spin {

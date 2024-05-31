@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audit Results</title>
     
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
   
@@ -41,6 +41,9 @@
            <h2>Robots.txt</h2>
            <p>Your website appears to have a robots.txt file.</p>
            <p>${auditResults.robotsTxtExists}</p>
+           <h2>Sitemap.xml</h2>
+           <p>Your website appears to have a sitemap.xml file.</p>
+           <p>${auditResults.sitemapUrl}</p>
                 <h2>Heading:</h2>
                 <p>${auditResults.h1Content}</p>
                 <h2>Number of H1 tags:</h2>
@@ -59,7 +62,19 @@
             //  document.getElementById('loadingOverlay').style.display = 'none';
           
         });
-        
+        document.getElementById('print').addEventListener('click', function() {
+    // Hide elements outside of auditResults
+    const elementsToHide = document.querySelectorAll('body > *:not(#auditResults)');
+    elementsToHide.forEach(element => {
+        element.style.display = 'none';
+    });
+
+   
+    // Trigger browser's print functionality
+    window.print();
+
+   
+});
    
  
     </script>
