@@ -5,7 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEO Audit Report Tool</title>
     <link rel="stylesheet" href="style.css">
-   
+   <style>
+    body{
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+    }
+    #seoForm{
+text-align: center;
+    }
+    #seoForm button{
+        background-color: #ee3e2f;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 45px !important;
+    font-size: 18px !important;
+    line-height: 1em;
+    display: inline-block;
+    margin-top: 1rem;
+    }
+    #seoForm input{
+    background-color: #FFFFFF !important;
+    border: 1px solid #e3e3e3 !important;
+    border-radius: 4px !important;
+    color: #565656 !important;
+    padding: 7px 12px !important;
+    font-size: 18px !important;
+    box-sizing: border-box !important;
+    height: 45px !important;
+    width: 100% !important;
+    display: block !important;
+    margin-top: 0px !important;
+    max-width: 280px;
+    margin-bottom: 16px;
+    resize: vertical;
+    }
+   </style>
 </head>
 <body>
     <div id="loadingOverlay">
@@ -15,15 +55,16 @@
             <p>we are fetching your audit report details, it will take less than one minute</p>
         </div>
     </div>
-    <h1>SEO Audit Report Tool</h1>
+   
     <form id="seoForm">
-        <label for="url">Enter URL:</label>
-        <input type="text" id="url" name="url" required>
+        <h1>SEO Audit Report</h1>
+        <label for="url"></label>
+        <input type="text" id="url" name="url" required placeholder="Enter url Here..."> <br>
         <button type="submit">Audit</button>
     </form>
 
 
-   
+ 
 
 
     <script>

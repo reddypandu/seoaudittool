@@ -28,12 +28,24 @@
 
             // Set the content of the div with audit results
             auditDiv.innerHTML = `
-                <h2>Title:</h2>
+                <h2>Title</h2>
+                <p>You have a title tag of optimal length (between 10 and 70 characters).</p>
                 <p>${auditResults.title}</p>
+                <p>Length: ${auditResults.titleLen}</p>
+                <h2>Meta Description:</h2>
+                <p>Your page has a meta description of optimal length (between 70 and 160 characters).</p>
+                <p>${auditResults.metaDescription}</p>
+                <p>Length: ${auditResults.metaDescriptionLength}</p>
                 <h2>Load Time:</h2>
                 <p>${auditResults.loadtime}</p>
-                <h2>Meta Description:</h2>
-                <p>${auditResults.metaDescription}</p>
+                <h2>Heading:</h2>
+                <p>${auditResults.h1Content}</p>
+                <h2>Number of H1 tags:</h2>
+                <p>${auditResults.h1Count}</p>
+                <h2>Number of images :</h2>
+                <p>${auditResults.imagesC}</p>
+                <h2>Number of images they Dosen't Have Alt:</h2>
+                <p>${auditResults.imageA}</p>
                 <h2>Canonical Tag</h2>
            <p>Your page is using the Canonical Tag.</p>
            <p>${auditResults.canonical}</p>
@@ -44,14 +56,10 @@
            <h2>Sitemap.xml</h2>
            <p>Your website appears to have a sitemap.xml file.</p>
            <p>${auditResults.sitemapUrl}</p>
-                <h2>Heading:</h2>
-                <p>${auditResults.h1Content}</p>
-                <h2>Number of H1 tags:</h2>
-                <p>${auditResults.h1Count}</p>
-                <h2>Number of images :</h2>
-                <p>${auditResults.imagesC}</p>
-                <h2>Number of images they Dosen't Have Alt:</h2>
-                <p>${auditResults.imageA}</p>
+           <h2>Analytics</h2>
+           <p>Your page is using an analytics tool.</p>
+           <p>${auditResults.googleAnalyticsStatus}</p>
+               
                 <h2>Screenshot:</h2>
                 <img src="${auditResults.screenshot}" alt="Screenshot">
             `;
