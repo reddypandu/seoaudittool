@@ -36,6 +36,9 @@
                 <p>Your page has a meta description of optimal length (between 70 and 160 characters).</p>
                 <p>${auditResults.metaDescription}</p>
                 <p>Length: ${auditResults.metaDescriptionLength}</p>
+                <h2>Amount of Content</h2>
+                <p>Your page has a good level of textual content, which will assist in it's ranking potential.</p>
+               <p>${auditResults.wordCountWithSymbol}</p>
                 <h2>Load Time:</h2>
                 <p>${auditResults.loadtime}</p>
                 <h2>Heading:</h2>
@@ -44,8 +47,11 @@
                 <p>${auditResults.h1Count}</p>
                 <h2>Number of images :</h2>
                 <p>${auditResults.imagesC}</p>
-                <h2>Number of images they Dosen't Have Alt:</h2>
-                <p>${auditResults.imageA}</p>
+                <h2>Image Alt Attributes:</h2>
+                <p>You have images on your page that are missing Alt attributes.</p>
+                <p>We found ${auditResults.imagesC} images on your page and ${auditResults.imageA} of them are missing the attribute.</p>
+                <p>Alt attributes are an often overlooked and simple way to signal to Search Engines what an image is
+about, and help it rank in image search results.</p>
                 <h2>Canonical Tag</h2>
            <p>Your page is using the Canonical Tag.</p>
            <p>${auditResults.canonical}</p>

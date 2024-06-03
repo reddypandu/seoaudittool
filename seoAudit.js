@@ -9,7 +9,7 @@ async function performAudit(url) {
       // Record the start time before navigating to the URL
       const startTime = Date.now();
     try {
-        await page.goto(url, { waitUntil: 'networkidle2',timeout: 0  });
+        await page.goto(url, { waitUntil: 'networkidle2',timeout: 100000  });
  
    
     
@@ -42,7 +42,31 @@ async function performAudit(url) {
             };
         });
 
+        let wordCount;
+  let wordCountWithSymbol;
+  try {
+    const textContent = await page.evaluate(() => {
+      return document.body.innerText;
+    });
 
+    // Count the words
+    wordCount = textContent.split(/\s+/).filter(word => word.length > 0).length;
+
+    // Check the word count and add the appropriate symbol
+    let wordSymbolHTML = '';
+    if (wordCount >= 300) { // Adjust this threshold as needed
+      wordSymbolHTML = '<i class="fa fa-check" style="font-size:24px;color:green"></i>';
+    } else {
+      wordSymbolHTML = '<i class="fa fa-close" style="font-size:24px;color:red"></i>';
+    }
+
+    // Append the symbol to the word count
+    wordCountWithSymbol = `Word Count: ${wordCount} ${wordSymbolHTML}`;
+  } catch (error) {
+    wordCountWithSymbol = 'Word Count: <i class="fa fa-close" style="font-size:24px;color:red"></i>';
+  }
+
+        
 
         // Get the meta description
         // const metaDescription = await page.$eval('meta[name="description"]', element => element.content);
@@ -163,23 +187,37 @@ async function performAudit(url) {
 
 
       // Evaluate the function in the context of the page to audit images
-      const imageAudits = await page.evaluate(() => {
-        const images = document.querySelectorAll('img');
-        const results = [];
+     // Extract the image audits
+  let imageAudits;
+  try {
+    imageAudits = await page.evaluate(() => {
+      const images = document.querySelectorAll('img');
+      const results = [];
 
-        images.forEach(image => {
-            const alt = image.getAttribute('alt');
-            if (!alt || alt.trim() === '') {
-                results.push({
-                    src: image.getAttribute('src'),
-                    alt: alt || '[MISSING]',
-                    error: 'Alt text is missing or empty'
-                });
-            }
-        });
+      images.forEach(image => {
+        const alt = image.getAttribute('alt');
+        if (!alt || alt.trim() === '') {
+          results.push({
+            src: image.getAttribute('src'),
+            alt: alt || '[MISSING]',
+            error: 'Alt text is missing or empty',
+            symbol: '<i class="fa fa-close" style="font-size:24px;color:red"></i>'
+          });
+        } else {
+          results.push({
+            src: image.getAttribute('src'),
+            alt: alt,
+            error: null,
+            symbol: '<i class="fa fa-check" style="font-size:24px;color:green"></i>'
+          });
+        }
+      });
 
-        return results;
+      return results;
     });
+  } catch (error) {
+    console.error('Error extracting image audits:', error);
+  }
 
 
 // Take a screenshot
@@ -194,10 +232,13 @@ await page.screenshot({ path: screenshotPath });
    
         return {
             url:url,
+            
             title: titleWithSymbol,
             titleLen:titleLen,
             loadtime:loadTime,
             h1Content:h1Tags.content,
+         
+            wordCountWithSymbol:wordCountWithSymbol,
             h1Count:h1Tags.count,
             metaDescription: metaDescription,
             metaDescriptionLength: metaDescription.length,
