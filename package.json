@@ -2,6 +2,7 @@
   "homepage": "https://reddypandu.github.io/seoaudittool/",
   "dependencies": {
     "express": "^4.19.2",
+    "fs": "^0.0.1-security",
     "puppeteer": "^22.6.2"
   },
   "scripts": {

@@ -6,6 +6,12 @@
     <title>Audit Results</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .img{
+        width: 200px;
+    }
+</style>
 </head>
 <body>
   
@@ -65,9 +71,11 @@ about, and help it rank in image search results.</p>
            <h2>Analytics</h2>
            <p>Your page is using an analytics tool.</p>
            <p>${auditResults.googleAnalyticsStatus}</p>
-               
-                <h2>Screenshot:</h2>
-                <img src="${auditResults.screenshot}" alt="Screenshot">
+              
+                <h2>Screenshot:Mobile View</h2>
+                <img src="${auditResults.mobileRelativePath}"  class="img">
+                <h2>Screenshot:Desktop View</h2>
+                <img src="${auditResults.desktopRelativePath}"  class="img">
             `;
          
        
