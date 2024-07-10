@@ -18,7 +18,7 @@ async function performAudit(url) {
 
         // Check the title length and add the appropriate symbol
         let symbolHTML = '';
-        if (titleLen >= 10 && titleLen <= 70) {
+        if (titleLen >= 50 && titleLen <= 60) {
             symbolHTML = '<i class="fa fa-check" style="font-size:24px;color:green"></i>';
         } else {
             symbolHTML = '<i class="fa fa-close" style="font-size:24px;color:red"></i>';
@@ -100,7 +100,7 @@ async function performAudit(url) {
             // Check the meta description length and add the appropriate symbol
             let metaSymbolHTML = '';
             metaDescriptionLength = metaDescription.length;
-            if (metaDescriptionLength >= 70 && metaDescriptionLength <= 160) {
+            if (metaDescriptionLength >= 120 && metaDescriptionLength <= 160) {
                 metaSymbolHTML = '<i class="fa fa-check" style="font-size:24px;color:green"></i>';
             } else {
                 metaSymbolHTML = '<i class="fa fa-close" style="font-size:24px;color:red"></i>';
