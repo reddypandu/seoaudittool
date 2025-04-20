@@ -232,26 +232,86 @@ async function performAudit(url) {
             console.error('Error navigating to sitemap.xml:', error);
         }
 
-        return {
-            url: url,
-            title: titleWithSymbol,
-            titleLen: titleLen,
-            loadtime: loadTime,
-            // businessData: businessData,
-            h1Content: h1Tags.content,
-            wordCountWithSymbol: wordCountWithSymbol,
-            h1Count: h1Tags.count,
-            metaDescription: metaDescription,
-            metaDescriptionLength: metaDescriptionLength,
-            imagesC: imageCount,
-            imageA: imageAudits.length,
-            mobileRelativePath:mobileRelativePath,
-            desktopRelativePath:desktopRelativePath,
-            robotsTxtExists: robotsTxtUrl,
-            canonical: canonical,
-            sitemapUrl: sitemapUrl,
-            googleAnalyticsStatus: googleAnalyticsStatus
-        };
+
+
+// iFrames
+const iframes = await page.$$('iframe');
+const iFramesStatus = iframes.length > 0
+  ? `Found ${iframes.length} iFrame(s) on your page. <i class="fa fa-close" style="font-size:24px;color:red"></i>`
+  : 'There are no iFrames detected on your page. <i class="fa fa-check" style="font-size:24px;color:green"></i>';
+
+// Favicon
+const favicon = await page.$('link[rel~="icon"]');
+const faviconStatus = favicon
+  ? 'Your page has specified a favicon. <i class="fa fa-check" style="font-size:24px;color:green"></i>'
+  : 'No favicon detected on your page. <i class="fa fa-close" style="font-size:24px;color:red"></i>';
+
+// SSL
+const urlObj = new URL(url);
+const sslStatus = urlObj.protocol === 'https:'
+  ? 'Your website has SSL enabled. <i class="fa fa-check" style="font-size:24px;color:green"></i>'
+  : 'SSL is not enabled on your website. <i class="fa fa-close" style="font-size:24px;color:red"></i>';
+
+
+// SCORING SYSTEM
+let score = 0;
+let total = 11; // Total number of checks
+
+// Check if each field includes the green check icon
+if (titleWithSymbol.includes('fa-check')) score++;
+if (wordCountWithSymbol.includes('fa-check')) score++;
+if (metaDescription.includes('fa-check')) score++;
+if (canonical.includes('fa-check')) score++;
+if (googleAnalyticsStatus.includes('fa-check')) score++;
+if (robotsTxtUrl.includes('fa-check')) score++;
+if (sitemapUrl.includes('fa-check')) score++;
+if (sslStatus.includes('fa-check')) score++;
+if (faviconStatus.includes('fa-check')) score++;
+if (iFramesStatus.includes('fa-check')) score++;
+
+// For images, if all have proper alt tags, full points
+const imageScore = imageCount === imageAudits.length ? 1 : 0;
+score += imageScore;
+
+// Calculate percentage
+const gradePercent = (score / total) * 100;
+
+// Determine grade
+let grade;
+if (gradePercent >= 90) grade = 'A';
+else if (gradePercent >= 80) grade = 'B+';
+else if (gradePercent >= 70) grade = 'B';
+else if (gradePercent >= 60) grade = 'B-';
+else if (gradePercent >= 50) grade = 'C';
+else grade = 'D';
+return {
+ 
+        url: url,
+        title: titleWithSymbol,
+        titleLen: titleLen,
+        loadtime: loadTime,
+        h1Content: h1Tags.content,
+        wordCountWithSymbol: wordCountWithSymbol,
+        h1Count: h1Tags.count,
+        metaDescription: metaDescription,
+        metaDescriptionLength: metaDescriptionLength,
+        imagesC: imageCount,
+        imageA: imageAudits.length,
+        mobileRelativePath: mobileRelativePath,
+        desktopRelativePath: desktopRelativePath,
+        robotsTxtExists: robotsTxtUrl,
+        canonical: canonical,
+        sitemapUrl: sitemapUrl,
+        googleAnalyticsStatus: googleAnalyticsStatus,
+        iframesDetected: iFramesStatus,
+        faviconStatus: faviconStatus,
+        sslEnabled: sslStatus,
+        auditGrade: grade,
+        scoreBreakdown: `${score}/${total} checks passed`
+
+    
+};
+
 
     } catch (error) {
         console.error('Error performing audit:', error);
