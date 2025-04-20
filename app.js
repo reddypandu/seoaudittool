@@ -2,7 +2,7 @@ const express = require('express');
 const seoAudit = require('./seoAudit'); // You'll need to implement this
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 // Serve static files (HTML, CSS, JS)
 app.use(express.static('public'));
