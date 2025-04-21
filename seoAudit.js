@@ -324,5 +324,5 @@ return {
         await browser.close();
     }
 }
-
 module.exports = performAudit;
+

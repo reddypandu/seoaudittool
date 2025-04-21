@@ -15,118 +15,122 @@
 </head>
 <body>
   
-    <h2>Audit Report</h2>
+    <!-- <h2>Audit Report</h2> -->
     <div id="auditResults">
         <!-- Audit results will be displayed here -->
     </div>
-<button id="print">Print</button>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-             // Show loading overlay
-           
-            // Parse the query parameter to get the audit results
-            const urlParams = new URLSearchParams(window.location.search);
-            const auditResultsQuery = urlParams.get('audit');
-            const auditResults = JSON.parse(decodeURIComponent(auditResultsQuery));
-          
-            // Create a div element to contain audit results
-            const auditDiv = document.createElement('div');
+<!-- <button id="print">Print</button> -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const auditResultsQuery = urlParams.get('audit');
+        const auditResults = JSON.parse(decodeURIComponent(auditResultsQuery));
+        const hostUrl = `${location.protocol}//${location.host}`;
+const mobileImgUrl = `${hostUrl}/${auditResults.mobileRelativePath}`;
+const desktopImgUrl = `${hostUrl}/${auditResults.desktopRelativePath}`;
 
-            // Set the content of the div with audit results
-            auditDiv.innerHTML = `
-    <h2 style="color: #333;">SEO Audit Grade</h2>
-    <p><strong>Grade:</strong> <span style="font-size: 1.5em; color: ${
-        auditResults.auditGrade === 'A' ? 'green' :
-        auditResults.auditGrade.includes('B') ? 'orange' :
-        'red'
-    }">${auditResults.auditGrade}</span></p>
-    <p><strong>Score:</strong> ${auditResults.scoreBreakdown}</p>
-
-    <h2>Title</h2>
-    <p>You have a title tag of optimal length (between 50 and 60 characters).</p>
-    <p>${auditResults.title}</p>
-    <p>Length: ${auditResults.titleLen}</p>
-
-    <h2>Meta Description:</h2>
-    <p>Your page has a meta description of optimal length (between 120 and 160 characters).</p>
-    <p>${auditResults.metaDescription}</p>
-    <p>Length: ${auditResults.metaDescriptionLength}</p>
-
-    <h2>Amount of Content</h2>
-    <p>Your page has a good level of textual content, which will assist in its ranking potential.</p>
-    <p>${auditResults.wordCountWithSymbol}</p>
-
-    <h2>Load Time:</h2>
-    <p>${auditResults.loadtime}</p>
-
-    <h2>Heading:</h2>
-    <p>${auditResults.h1Content}</p>
-
-    <h2>Number of H1 tags:</h2>
-    <p>${auditResults.h1Count}</p>
-
-    <h2>Number of images :</h2>
-    <p>${auditResults.imagesC}</p>
-
-    <h2>Image Alt Attributes:</h2>
-    <p>You have images on your page that are missing Alt attributes.</p>
-    <p>We found ${auditResults.imagesC} images on your page and ${auditResults.imageA} of them are missing the attribute.</p>
-    <p>Alt attributes are an often overlooked and simple way to signal to Search Engines what an image is about, and help it rank in image search results.</p>
-
-    <h2>Canonical Tag</h2>
-    <p>Your page is using the Canonical Tag.</p>
-    <p>${auditResults.canonical}</p>
-
-    <h2>Robots.txt</h2>
-    <p>Your website appears to have a robots.txt file.</p>
-    <p>${auditResults.robotsTxtExists}</p>
-
-    <h2>Sitemap.xml</h2>
-    <p>Your website appears to have a sitemap.xml file.</p>
-    <p>${auditResults.sitemapUrl}</p>
-
-    <h2>Analytics</h2>
-    <p>Your page is using an analytics tool.</p>
-    <p>${auditResults.googleAnalyticsStatus}</p>
- <h2>iFrames Used?</h2>
-    <p>${auditResults.iframesDetected}</p>
-
-    <h2>Favicon</h2>
-    <p>${auditResults.faviconStatus}</p>
-
-    <h2>SSL Enabled</h2>
-    <p>${auditResults.sslEnabled}</p>
-
-    <h2>Screenshot: Mobile View</h2>
-    <img src="${auditResults.mobileRelativePath}" class="img">
+        const auditHTML = `
+        <h2 style="color: #333;">SEO Audit Grade</h2>
+        <p><strong>Grade:</strong> <span style="font-size: 1.5em; color: ${
+            auditResults.auditGrade === 'A' ? 'green' :
+            auditResults.auditGrade.includes('B') ? 'orange' :
+            'red'
+        }">${auditResults.auditGrade}</span></p>
+        <p><strong>Score:</strong> ${auditResults.scoreBreakdown}</p>
     
-    <h2>Screenshot: Desktop View</h2>
-    <img src="${auditResults.desktopRelativePath}" class="img">
-`;
+        <h2>Title</h2>
+        <p>You have a title tag of optimal length (between 50 and 60 characters).</p>
+        <p>${auditResults.title}</p>
+        <p>Length: ${auditResults.titleLen}</p>
+    
+        <h2>Meta Description:</h2>
+        <p>Your page has a meta description of optimal length (between 120 and 160 characters).</p>
+        <p>${auditResults.metaDescription}</p>
+        <p>Length: ${auditResults.metaDescriptionLength}</p>
+    
+        <h2>Amount of Content</h2>
+        <p>Your page has a good level of textual content, which will assist in its ranking potential.</p>
+        <p>${auditResults.wordCountWithSymbol}</p>
+    
+        <h2>Load Time:</h2>
+        <p>${auditResults.loadtime}</p>
+    
+        <h2>Heading:</h2>
+        <p>${auditResults.h1Content}</p>
+    
+        <h2>Number of H1 tags:</h2>
+        <p>${auditResults.h1Count}</p>
+    
+        <h2>Number of images :</h2>
+        <p>${auditResults.imagesC}</p>
+    
+        <h2>Image Alt Attributes:</h2>
+        <p>You have images on your page that are missing Alt attributes.</p>
+        <p>We found ${auditResults.imagesC} images on your page and ${auditResults.imageA} of them are missing the attribute.</p>
+        <p>Alt attributes are an often overlooked and simple way to signal to Search Engines what an image is about, and help it rank in image search results.</p>
+    
+        <h2>Canonical Tag</h2>
+        <p>Your page is using the Canonical Tag.</p>
+        <p>${auditResults.canonical}</p>
+    
+        <h2>Robots.txt</h2>
+        <p>Your website appears to have a robots.txt file.</p>
+        <p>${auditResults.robotsTxtExists}</p>
+    
+        <h2>Sitemap.xml</h2>
+        <p>Your website appears to have a sitemap.xml file.</p>
+        <p>${auditResults.sitemapUrl}</p>
+    
+        <h2>Analytics</h2>
+        <p>Your page is using an analytics tool.</p>
+        <p>${auditResults.googleAnalyticsStatus}</p>
+    
+        <h2>iFrames Used?</h2>
+        <p>${auditResults.iframesDetected}</p>
+    
+        <h2>Favicon</h2>
+        <p>${auditResults.faviconStatus}</p>
+    
+        <h2>SSL Enabled</h2>
+        <p>${auditResults.sslEnabled}</p>
+    
+       <h2>Screenshot: Mobile View</h2>
+<img src="${mobileImgUrl}" class="img" style="width:200px;">
 
-         
-       
-            // Append the audit div to the #auditResults div
-            document.getElementById('auditResults').appendChild(auditDiv);
-            //  document.getElementById('loadingOverlay').style.display = 'none';
-          
+<h2>Screenshot: Desktop View</h2>
+<img src="${desktopImgUrl}" class="img" style="width:200px;">
+        `;
+    
+        // Send directly to PDF generation
+        fetch('/create-report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                htmlContent: `
+                <html>
+                <head>
+                  <style>
+                    body { font-family: Arial; padding: 20px; }
+                    h2 { color: #333; }
+                    img { width: 100%; margin-top: 10px; }
+                  </style>
+                </head>
+                <body>${auditHTML}</body>
+                </html>
+                `
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                window.location.replace(data.pdfUrl);
+            } else {
+                alert('Failed to create PDF');
+            }
         });
-        document.getElementById('print').addEventListener('click', function() {
-    // Hide elements outside of auditResults
-    const elementsToHide = document.querySelectorAll('body > *:not(#auditResults)');
-    elementsToHide.forEach(element => {
-        element.style.display = 'none';
     });
-
-   
-    // Trigger browser's print functionality
-    window.print();
-
-   
-});
-   
- 
     </script>
+    
  
     
 </body>

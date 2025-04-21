@@ -1,8 +1,9 @@
 {
   "homepage": "https://reddypandu.github.io/seoaudittool/",
   "dependencies": {
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "fs": "^0.0.1-security",
+    "html-pdf": "^3.0.1",
     "puppeteer": "^22.15.0"
   },
   "scripts": {
